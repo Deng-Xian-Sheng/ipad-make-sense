@@ -11,6 +11,12 @@ import {Settings} from '../../../settings/Settings';
 import {ProjectData} from '../../../store/general/types';
 import DropDownMenu from './DropDownMenu/DropDownMenu';
 
+// 辅助函数获取资源的完整路径
+const getAssetPath = (path: string): string => {
+    const cleanPath = path.startsWith('/') ? path.slice(1) : path;
+    return `${import.meta.env.BASE_URL}${cleanPath}`;
+};
+
 interface IProps {
     updateActivePopupTypeAction: (activePopupType: PopupWindowType) => any;
     updateProjectDataAction: (projectData: ProjectData) => any;
@@ -47,7 +53,7 @@ const TopNavigationBar: React.FC<IProps> = (props) => {
                         <img
                             draggable={false}
                             alt={'make-sense'}
-                            src={'/make-sense-ico-transparent.png'}
+                            src={getAssetPath('make-sense-ico-transparent.png')}
                         />
                         Make Sense
                     </div>
@@ -66,7 +72,7 @@ const TopNavigationBar: React.FC<IProps> = (props) => {
                 </div>
                 <div className='NavigationBarGroupWrapper'>
                     <ImageButton
-                        image={'ico/github-logo.png'}
+                        image={getAssetPath('ico/github-logo.png')}
                         imageAlt={'github-logo.png'}
                         buttonSize={{width: 30, height: 30}}
                         href={Settings.GITHUB_URL}
