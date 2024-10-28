@@ -29,10 +29,16 @@ jobs:
           cache: 'npm'
       
       - name: Install dependencies
-        run: npm ci  # 使用 ci 而不是 install 以确保干净安装
+        run: npm ci
       
       - name: Build project
         run: npm run build
+      
+      - name: Copy public directory to dist
+        run: |
+          if [ -d "public" ]; then
+            cp -r public/* dist/
+          fi
       
       - name: Setup Pages
         uses: actions/configure-pages@v4
@@ -40,7 +46,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './dist'  # 这里需要修改为你的构建输出目录
+          path: './dist'
       
       - name: Deploy to GitHub Pages
         id: deployment
