@@ -22,4 +22,10 @@ export class PlatformUtil {
     public static isFirefox(userAgent: string): boolean {
         return !!userAgent.toLowerCase().match("firefox");
     }
+
+    public static optimizeAnnotationInterface(): void {
+        if (PlatformModel.mobileDeviceData.manufacturer && PlatformModel.mobileDeviceData.os) {
+            document.body.classList.add('mobile-optimized');
+        }
+    }
 }
