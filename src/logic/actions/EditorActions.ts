@@ -142,5 +142,9 @@ export class EditorActions {
             EditorModel.cursor.style.display = "none";
             EditorModel.mousePositionIndicator.style.display = "none";
         }
+
+        if (event.pointerType === 'pen') {
+            console.log('Stylus input detected');
+        }
     };
 }
