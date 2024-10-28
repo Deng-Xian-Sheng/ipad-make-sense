@@ -42,6 +42,11 @@ const App: React.FC<IProps> = (
                         console.log('Stylus input detected');
                     }
                 });
+                window.addEventListener('pointerdown', (event) => {
+                    if (event.pointerType === 'touch') {
+                        console.log('Touch input detected');
+                    }
+                });
             }
             if (PlatformModel.mobileDeviceData.stylusSupport) {
                 document.body.classList.add('stylus-supported');

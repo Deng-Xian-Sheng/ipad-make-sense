@@ -32,6 +32,9 @@ const MobileMainView: React.FC<IProps> = ({size}) => {
         if (event.pointerType === 'pen') {
             console.log('Stylus input detected');
         }
+        if (event.pointerType === 'touch') {
+            console.log('Touch input detected');
+        }
     };
 
     const getEditorFeatureTiles = (features: IEditorFeature[]) => {

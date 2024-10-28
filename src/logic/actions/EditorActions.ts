@@ -146,5 +146,9 @@ export class EditorActions {
         if (event.pointerType === 'pen') {
             console.log('Stylus input detected');
         }
+
+        if (event.pointerType === 'touch') {
+            console.log('Touch input detected');
+        }
     };
 }
