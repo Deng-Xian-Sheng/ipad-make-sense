@@ -6,13 +6,18 @@ import {GeneralSelector} from '../../store/selectors/GeneralSelector';
 import {RenderEngineSettings} from '../../settings/RenderEngineSettings';
 import {LabelName} from '../../store/labels/types';
 import {LabelsSelector} from '../../store/selectors/LabelsSelector';
+import Hammer from 'hammerjs';
 
 export abstract class BaseRenderEngine {
     protected readonly canvas: HTMLCanvasElement;
     public labelType: LabelType;
+    private hammer: HammerManager;
 
     protected constructor(canvas: HTMLCanvasElement) {
         this.canvas = canvas;
+        this.hammer = new Hammer(this.canvas);
+        this.hammer.get('pan').set({ direction: Hammer.DIRECTION_ALL });
+        this.hammer.on('panstart panmove panend', this.handlePan);
     }
 
     public update(data: EditorData): void {
@@ -59,4 +64,13 @@ export abstract class BaseRenderEngine {
             return isActive ? RenderEngineSettings.ACTIVE_ANCHOR_COLOR : RenderEngineSettings.INACTIVE_ANCHOR_COLOR;
         }
     }
+
+    private handlePan = (event) => {
+        const mouseEvent = new MouseEvent(event.type === 'panstart' ? 'mousedown' : event.type === 'panend' ? 'mouseup' : 'mousemove', {
+            clientX: event.center.x,
+            clientY: event.center.y,
+            buttons: event.type === 'panend' ? 0 : 1
+        });
+        this.update({ event: mouseEvent });
+    };
 }

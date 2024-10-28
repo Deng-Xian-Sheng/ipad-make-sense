@@ -24,6 +24,7 @@ import {EditorActions} from '../actions/EditorActions';
 import {GeneralSelector} from '../../store/selectors/GeneralSelector';
 import {LabelStatus} from '../../data/enums/LabelStatus';
 import {LabelUtil} from '../../utils/LabelUtil';
+import Hammer from 'hammerjs';
 
 export class RectRenderEngine extends BaseRenderEngine {
 
@@ -33,10 +34,14 @@ export class RectRenderEngine extends BaseRenderEngine {
 
     private startCreateRectPoint: IPoint;
     private startResizeRectAnchor: RectAnchor;
+    private hammer: HammerManager;
 
     public constructor(canvas: HTMLCanvasElement) {
         super(canvas);
         this.labelType = LabelType.RECT;
+        this.hammer = new Hammer(this.canvas);
+        this.hammer.get('pan').set({ direction: Hammer.DIRECTION_ALL });
+        this.hammer.on('panstart panmove panend', this.handlePan);
     }
 
     // =================================================================================================================
@@ -315,4 +320,13 @@ export class RectRenderEngine extends BaseRenderEngine {
         this.startResizeRectAnchor = null;
         EditorActions.setViewPortActionsDisabledStatus(false);
     }
+
+    private handlePan = (event) => {
+        const mouseEvent = new MouseEvent(event.type === 'panstart' ? 'mousedown' : event.type === 'panend' ? 'mouseup' : 'mousemove', {
+            clientX: event.center.x,
+            clientY: event.center.y,
+            buttons: event.type === 'panend' ? 0 : 1
+        });
+        this.update({ event: mouseEvent });
+    };
 }

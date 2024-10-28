@@ -8,10 +8,18 @@ import {EditorModel} from "../../staticModels/EditorModel";
 import {IPoint} from "../../interfaces/IPoint";
 import {PointUtil} from "../../utils/PointUtil";
 import {ViewPortActions} from "../actions/ViewPortActions";
+import Hammer from 'hammerjs';
 
 export class ViewPortHelper {
     private startScrollPosition: IPoint;
     private mouseStartPosition: IPoint;
+    private hammer: HammerManager;
+
+    constructor() {
+        this.hammer = new Hammer(EditorModel.canvas);
+        this.hammer.get('pan').set({ direction: Hammer.DIRECTION_ALL });
+        this.hammer.on('panstart panmove panend', this.handlePan);
+    }
 
     public update(data: EditorData): void {
         if (!!data.event) {
@@ -60,4 +68,13 @@ export class ViewPortHelper {
         }
         EditorModel.canvas.style.cursor = "none";
     }
+
+    private handlePan = (event) => {
+        const mouseEvent = new MouseEvent(event.type === 'panstart' ? 'mousedown' : event.type === 'panend' ? 'mouseup' : 'mousemove', {
+            clientX: event.center.x,
+            clientY: event.center.y,
+            buttons: event.type === 'panend' ? 0 : 1
+        });
+        this.update({ event: mouseEvent });
+    };
 }
