@@ -8,6 +8,7 @@ import classNames from 'classnames'
 import {EditorFeatureData, IEditorFeature} from "../../data/info/EditorFeatureData";
 import {ISocialMedia, SocialMediaData} from "../../data/info/SocialMediaData";
 import {ImageButton} from "../Common/ImageButton/ImageButton";
+import { PlatformModel } from '../../staticModels/PlatformModel';
 
 interface IProps {
     size: ISize;

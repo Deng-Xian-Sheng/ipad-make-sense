@@ -13,6 +13,7 @@ export class AppInitializer {
         AppInitializer.detectDeviceParams();
         AppInitializer.handleAccidentalPageExit();
         AppInitializer.optimizeAnnotationInterface();
+        AppInitializer.implementPreciseStylusInput();
         window.addEventListener(EventType.RESIZE, AppInitializer.handleResize);
         window.addEventListener(EventType.MOUSE_WHEEL, AppInitializer.disableGenericScrollZoom,{passive:false});
         window.addEventListener(EventType.KEY_DOWN, AppInitializer.disableUnwantedKeyBoardBehaviour);
@@ -68,6 +69,16 @@ export class AppInitializer {
         }
         if (PlatformModel.mobileDeviceData.touchSupport) {
             document.body.classList.add('touch-supported');
+        }
+    };
+
+    private static implementPreciseStylusInput = () => {
+        if (window.PointerEvent) {
+            window.addEventListener('pointerdown', (event) => {
+                if (event.pointerType === 'pen') {
+                    console.log('Precise stylus input detected');
+                }
+            });
         }
     };
 }
