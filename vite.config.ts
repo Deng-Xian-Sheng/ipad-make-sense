@@ -11,6 +11,7 @@ export default ({ mode }: UserConfig): UserConfigExport => {
   process.env = { ...process.env, ...loadEnv(mode || 'development', process.cwd()) };
   return defineConfig({
     plugins: [react()],
+    base: '/ipad-make-sense/', // 替换为你的仓库名
     build: {
       minify: 'terser',
       sourcemap: mode === 'development',
