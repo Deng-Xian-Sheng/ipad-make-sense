@@ -118,7 +118,10 @@ const MobileMainView: React.FC<IProps> = ({size}) => {
         </div>
     </div>;
 
-    return(<div className="MobileMainView" onPointerDown={handlePointerDown}>
+    return(<div className={classNames("MobileMainView", {
+        'stylus-supported': PlatformModel.mobileDeviceData.stylusSupport,
+        'touch-supported': PlatformModel.mobileDeviceData.touchSupport
+    })} onPointerDown={handlePointerDown}>
         {topNavigationBar}
         <Scrollbars
             onScrollFrame={onScroll}
