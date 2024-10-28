@@ -37,7 +37,7 @@ jobs:
       - name: Copy public directory to dist
         run: |
           if [ -d "public" ]; then
-            cp -r public/* dist/
+            cp -r public dist/
           fi
       
       - name: Setup Pages
