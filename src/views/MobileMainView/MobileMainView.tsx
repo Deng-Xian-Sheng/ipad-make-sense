@@ -28,6 +28,12 @@ const MobileMainView: React.FC<IProps> = ({size}) => {
         setScrollPosition(value.scrollTop);
     };
 
+    const handlePointerDown = (event) => {
+        if (event.pointerType === 'pen') {
+            console.log('Stylus input detected');
+        }
+    };
+
     const getEditorFeatureTiles = (features: IEditorFeature[]) => {
         return features.map((data:IEditorFeature) => {
             return <div
@@ -112,7 +118,7 @@ const MobileMainView: React.FC<IProps> = ({size}) => {
         </div>
     </div>;
 
-    return(<div className="MobileMainView">
+    return(<div className="MobileMainView" onPointerDown={handlePointerDown}>
         {topNavigationBar}
         <Scrollbars
             onScrollFrame={onScroll}
