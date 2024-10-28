@@ -35,10 +35,7 @@ jobs:
         run: npm run build
       
       - name: Copy public directory to dist
-        run: |
-          if [ -d "public" ]; then
-            cp -r public dist/
-          fi
+        run: cp -r public/* dist/
       
       - name: Setup Pages
         uses: actions/configure-pages@v4
