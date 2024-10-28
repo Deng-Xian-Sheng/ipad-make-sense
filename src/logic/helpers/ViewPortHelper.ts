@@ -17,12 +17,15 @@ export class ViewPortHelper {
         if (!!data.event) {
             switch (MouseEventUtil.getEventType(data.event)) {
                 case EventType.MOUSE_MOVE:
+                case EventType.POINTER_MOVE:
                     this.mouseMoveHandler(data);
                     break;
                 case EventType.MOUSE_UP:
+                case EventType.POINTER_UP:
                     this.mouseUpHandler(data);
                     break;
                 case EventType.MOUSE_DOWN:
+                case EventType.POINTER_DOWN:
                     this.mouseDownHandler(data);
                     break;
                 default:

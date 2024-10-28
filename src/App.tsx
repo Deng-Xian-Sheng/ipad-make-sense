@@ -35,8 +35,16 @@ const App: React.FC<IProps> = (
     }
 ) => {
     const selectRoute = () => {
-        if (!!PlatformModel.mobileDeviceData.manufacturer && !!PlatformModel.mobileDeviceData.os)
+        if (!!PlatformModel.mobileDeviceData.manufacturer && !!PlatformModel.mobileDeviceData.os) {
+            if (window.PointerEvent) {
+                window.addEventListener('pointerdown', (event) => {
+                    if (event.pointerType === 'pen') {
+                        console.log('Stylus input detected');
+                    }
+                });
+            }
             return <MobileMainView/>;
+        }
         if (!projectType)
             return <MainView/>;
         else {
