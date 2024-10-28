@@ -12,6 +12,7 @@ export class AppInitializer {
         AppInitializer.handleResize();
         AppInitializer.detectDeviceParams();
         AppInitializer.handleAccidentalPageExit();
+        AppInitializer.optimizeAnnotationInterface();
         window.addEventListener(EventType.RESIZE, AppInitializer.handleResize);
         window.addEventListener(EventType.MOUSE_WHEEL, AppInitializer.disableGenericScrollZoom,{passive:false});
         window.addEventListener(EventType.KEY_DOWN, AppInitializer.disableUnwantedKeyBoardBehaviour);
@@ -56,5 +57,11 @@ export class AppInitializer {
         PlatformModel.isMac = PlatformUtil.isMac(userAgent);
         PlatformModel.isSafari = PlatformUtil.isSafari(userAgent);
         PlatformModel.isFirefox = PlatformUtil.isFirefox(userAgent);
+    };
+
+    private static optimizeAnnotationInterface = () => {
+        if (PlatformModel.mobileDeviceData.manufacturer && PlatformModel.mobileDeviceData.os) {
+            document.body.classList.add('mobile-optimized');
+        }
     };
 }
