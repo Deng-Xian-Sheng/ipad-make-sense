@@ -43,6 +43,12 @@ const App: React.FC<IProps> = (
                     }
                 });
             }
+            if (PlatformModel.mobileDeviceData.stylusSupport) {
+                document.body.classList.add('stylus-supported');
+            }
+            if (PlatformModel.mobileDeviceData.touchSupport) {
+                document.body.classList.add('touch-supported');
+            }
             return <MobileMainView/>;
         }
         if (!projectType)
