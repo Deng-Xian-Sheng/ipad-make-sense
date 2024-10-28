@@ -28,6 +28,7 @@ import {RenderEngineUtil} from '../../../utils/RenderEngineUtil';
 import {LabelStatus} from '../../../data/enums/LabelStatus';
 import {isEqual} from 'lodash';
 import {AIActions} from '../../../logic/actions/AIActions';
+import Hammer from 'hammerjs';
 
 interface IProps {
     size: ISize;
@@ -46,6 +47,7 @@ interface IState {
 }
 
 class Editor extends React.Component<IProps, IState> {
+    private hammer: HammerManager;
 
     constructor(props) {
         super(props);
@@ -70,10 +72,15 @@ class Editor extends React.Component<IProps, IState> {
         EditorActions.mountRenderEnginesAndHelpers(activeLabelType);
         ImageLoadManager.addAndRun(this.loadImage(imageData));
         ViewPortActions.resizeCanvas(this.props.size);
+
+        this.hammer = new Hammer(EditorModel.canvas);
+        this.hammer.get('pan').set({ direction: Hammer.DIRECTION_ALL });
+        this.hammer.on('panstart panmove panend', this.handlePan);
     }
 
     public componentWillUnmount(): void {
         this.unmountEventListeners();
+        this.hammer.off('panstart panmove panend', this.handlePan);
     }
 
     public componentDidUpdate(prevProps: Readonly<IProps>, prevState: Readonly<{}>, snapshot?: any): void {
@@ -106,6 +113,15 @@ class Editor extends React.Component<IProps, IState> {
         EditorModel.canvas.removeEventListener(EventType.MOUSE_DOWN, this.update);
         EditorModel.canvas.removeEventListener(EventType.MOUSE_WHEEL, this.handleZoom);
     }
+
+    private handlePan = (event) => {
+        const mouseEvent = new MouseEvent(event.type === 'panstart' ? 'mousedown' : event.type === 'panend' ? 'mouseup' : 'mousemove', {
+            clientX: event.center.x,
+            clientY: event.center.y,
+            buttons: event.type === 'panend' ? 0 : 1
+        });
+        this.update(mouseEvent);
+    };
 
     // =================================================================================================================
     // LOAD IMAGE
